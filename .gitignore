@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# generated output files from Jinja2 templating
+img.png
+output.html
