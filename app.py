@@ -2,17 +2,18 @@ import sys
 from jinja2 import Template
 import matplotlib.pyplot as plt
 
-def student_details(lines,id):
-  found=False
-  for line in lines:
-    data=line.split(',')
-    if data[0]==id:
-      found=True
-      break
-  if found==False:
-    return wrong_input()
-    
-  html_data= """<!DOCTYPE html>
+
+def student_details(lines, id):
+    found = False
+    for line in lines:
+        data = line.split(",")
+        if data[0] == id:
+            found = True
+            break
+    if found == False:
+        return wrong_input()
+
+    html_data = """<!DOCTYPE html>
   <head><title>Student Data</title>
   <style>
   table, th, td {
@@ -46,33 +47,34 @@ def student_details(lines,id):
       </tr>
     </table>
   </body></html>"""
-  template=Template(html_data)
-  template_output=template.render(lines=lines,id=id)
-  return template_output
-  
+    template = Template(html_data)
+    template_output = template.render(lines=lines, id=id)
+    return template_output
+
+
 def course_details(lines, id):
-  found=False
-  for line in lines:
-    data=line.split(',')
-    if data[1].strip() == id:
-      found=True
-      break
-  if found==False:
-    return wrong_input()
-    
-  list_data=[]
-  for line in lines:
-    data=line.split(',')
-    if data[1].strip() == id:
-      list_data.append(data[2])
-  fig, axe = plt.subplots(dpi=800)
-  plt.xlabel("Marks")
-  plt.ylabel("Frequency")
-  list_data.sort()
-  axe.hist(list_data)
-  fig.savefig("img.png")
-  plt.close(fig)
-  html_data = """<!DOCTYPE html>
+    found = False
+    for line in lines:
+        data = line.split(",")
+        if data[1].strip() == id:
+            found = True
+            break
+    if found == False:
+        return wrong_input()
+
+    list_data = []
+    for line in lines:
+        data = line.split(",")
+        if data[1].strip() == id:
+            list_data.append(data[2])
+    fig, axe = plt.subplots(dpi=800)
+    plt.xlabel("Marks")
+    plt.ylabel("Frequency")
+    list_data.sort()
+    axe.hist(list_data)
+    fig.savefig("img.png")
+    plt.close(fig)
+    html_data = """<!DOCTYPE html>
   <head><title>Course Data</title>
   <style>
   table, th, td {
@@ -109,35 +111,38 @@ def course_details(lines, id):
     </table>
     <img src="img.png" width="500" height="300">
   </body></html>"""
- 
-  template=Template(html_data)
-  template_output=template.render(lines=lines,id=id)
-  return template_output
-  
+
+    template = Template(html_data)
+    template_output = template.render(lines=lines, id=id)
+    return template_output
+
+
 def wrong_input():
-  return """<!DOCTYPE html>
+    return """<!DOCTYPE html>
   <head><title>Something Went Wrong</title></head>
   <body>
     <h1>Wrong Inputs</h1>
     <p>Something went wrong</p>
   </body>
   </html>"""
+
+
 # main program starts from here
-first_param=sys.argv[1]
-second_param=sys.argv[2]
-output=""
-data_file=open("data.csv","r")
-#skip first line of the file as it is header
+first_param = sys.argv[1]
+second_param = sys.argv[2]
+output = ""
+data_file = open("data.csv", "r")
+# skip first line of the file as it is header
 data_file.readline()
-lines=data_file.readlines()
+lines = data_file.readlines()
 data_file.close()
 if first_param == "-s":
-    output=student_details(lines,second_param)
+    output = student_details(lines, second_param)
 elif first_param == "-c":
-    output=course_details(lines,second_param)
+    output = course_details(lines, second_param)
 else:
     output = wrong_input()
 
-output_file=open("output.html","w")
+output_file = open("output.html", "w")
 output_file.write(output)
 output_file.close()
